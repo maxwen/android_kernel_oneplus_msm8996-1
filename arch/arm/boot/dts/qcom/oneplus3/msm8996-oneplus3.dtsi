@@ -11,7 +11,7 @@
  */
 
 #include "../msm8996-pinctrl.dtsi"
-#include "msm8996-camera-sensor-15801.dtsi"
+#include "msm8996-camera-sensor-oneplus3.dtsi"
 #include "dsi-panel-samsung_s6e3fa3_1080p_cmd.dtsi"  //guozhiming modify for lcd 2015-10-15
 
 
@@ -280,7 +280,7 @@
 	};
 };
 
-#include "msm8996-mdss-panels-15801.dtsi"
+#include "msm8996-mdss-panels-oneplus3.dtsi"
 
 
 /*  //guozhiming modify for lcd 2015-10-15

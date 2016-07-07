@@ -273,6 +273,14 @@ config ARCH_MSM8996
 	  This enables support for the MSM8996 chipset. If you don't
 	  know what to do here, say N
 
+config ARCH_ONEPLUS3
+	bool "Enable Support for Oneplus3"
+	depends on ARCH_MSM
+	select ARCH_MSM8996
+	help
+	  This enables support for the MSM8996 chipset on Oneplus3. If you don't
+	  know what to do here, say N
+
 config ARCH_MSMCOBALT
 	bool "Enable Support for Qualcomm MSMCOBALT"
 	depends on ARCH_MSM
