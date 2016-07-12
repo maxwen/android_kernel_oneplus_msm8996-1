@@ -3489,12 +3489,18 @@ static int hotplug_notify(enum thermal_trip_type type, int temp, void *data)
 		return 0;
 	switch (type) {
 	case THERMAL_TRIP_CONFIGURABLE_HI:
-		if (!(cpu_node->offline))
+		if (!(cpu_node->offline)) {
+			pr_info_ratelimited(
+				"Mitigating CPU%d\n", cpu_node->cpu);
 			cpu_node->offline = 1;
+		}
 		break;
 	case THERMAL_TRIP_CONFIGURABLE_LOW:
-		if (cpu_node->offline)
+		if (cpu_node->offline) {
+			pr_info_ratelimited(
+				"Removing mitigating CPU%d\n", cpu_node->cpu);
 			cpu_node->offline = 0;
+		}
 		break;
 	default:
 		break;
@@ -3554,6 +3560,11 @@ static void hotplug_init(void)
 
 	if (!hotplug_enabled)
 		goto init_kthread;
+
+	pr_info("hotplug_init: %d - %d\n", (msm_thermal_info.hotplug_temp_degC -
+				msm_thermal_info.hotplug_temp_hysteresis_degC)
+				* tsens_scaling_factor, (msm_thermal_info.hotplug_temp_degC)
+				* tsens_scaling_factor);
 
 	for_each_possible_cpu(cpu) {
 		cpus[cpu].sensor_id =
@@ -3682,7 +3693,7 @@ static int freq_mitigation_notify(enum thermal_trip_type type,
 {
 	struct cpu_info *cpu_node = (struct cpu_info *) data;
 
-	pr_debug("%s reached temp threshold: %d\n",
+	pr_info_ratelimited("%s reached temp threshold: %d\n",
 		cpu_node->sensor_type, temp);
 
 	if (!(msm_thermal_info.freq_mitig_control_mask &
@@ -3731,6 +3742,11 @@ static void freq_mitigation_init(void)
 		return;
 	if (!freq_mitigation_enabled)
 		goto init_freq_thread;
+
+	pr_info("freq_mitigation_init: %d - %d\n", (msm_thermal_info.freq_mitig_temp_degc -
+			msm_thermal_info.freq_mitig_temp_hysteresis_degc)
+				* tsens_scaling_factor, msm_thermal_info.freq_mitig_temp_degc
+				* tsens_scaling_factor);
 
 	for_each_possible_cpu(cpu) {
 		/*
