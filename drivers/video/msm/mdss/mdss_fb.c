@@ -855,10 +855,7 @@ static ssize_t mdss_fb_get_srgb_mode(struct device *dev,
 	level = mdss_fb_send_panel_event(mfd, MDSS_EVENT_PANEL_GET_SRGB_MODE,
 			NULL);
 
-	ret=scnprintf(buf, PAGE_SIZE, "mode = %d\n"
-					                        "0-->sRGB Mode OFF\n"
-											"1-->sRGB Mode ON\n",
-										    level);
+	ret=scnprintf(buf, PAGE_SIZE, "%d\n", level);
 	return ret;
 }
 
